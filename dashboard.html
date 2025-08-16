@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة التحكم - Wassal Khedma</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f9;
+      color: #2c3e50;
+    }
+
+    nav {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #1abc9c;
+    }
+
+    .dashboard {
+      padding: 40px 20px;
+      max-width: 1100px;
+      margin: 20px auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 48px;
+      color: #3498db;
+      user-select: none;
+    }
+
+    .card p {
+      margin-top: 12px;
+      font-size: 20px;
+      color: #555;
+      user-select: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 15px 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: #2980b9;
+      color: white;
+      user-select: none;
+    }
+
+    tbody tr:hover {
+      background-color: #f0f8ff;
+    }
+
+    .footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 60px;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- حماية الصفحة بناء على صلاحية المدير -->
+  <script>
+    let userRoleRaw = localStorage.getItem("role") || "";
+    const userRole = userRoleRaw.trim().toLowerCase();
+
+    console.log("Current role from localStorage:", userRoleRaw);
+
+    if (userRole !== "admin") {
+      alert("❌ ليس لديك صلاحية الوصول لهذه الصفحة.");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <nav aria-label="قائمة التنقل الرئيسية">
+    <a href="dashboard.html" aria-current="page">لوحة التحكم</a>
+    <a href="workers.html">إدارة العمال</a>
+    <a href="clients.html">إدارة العملاء</a>
+    <a href="requests.html">الطلبات</a>
+    <a href="payments.html">المدفوعات</a>
+    <a href="#" id="logoutLink">تسجيل الخروج</a>
+  </nav>
+
+  <main class="dashboard" role="main" aria-label="لوحة تحكم الإدارة">
+
+    <h1>لوحة تحكم الإدارة - Wassal Khedma</h1>
+
+    <section class="cards" aria-label="مؤشرات النظام">
+      <article class="card" aria-labelledby="workerCountLabel">
+        <h2 id="workerCount">0</h2>
+        <p id="workerCountLabel">عدد العمال</p>
+      </article>
+
+      <article class="card" aria-labelledby="clientCountLabel">
+        <h2 id="clientCount">0</h2>
+        <p id="clientCountLabel">عدد العملاء</p>
+      </article>
+
+      <article class="card" aria-labelledby="requestCountLabel">
+        <h2 id="requestCount">0</h2>
+        <p id="requestCountLabel">عدد الطلبات</p>
+      </article>
+
+      <article class="card" aria-labelledby="paymentCountLabel">
+        <h2 id="paymentCount">0</h2>
+        <p id="paymentCountLabel">عدد المدفوعات</p>
+      </article>
+
+      <article class="card" aria-labelledby="adminCountLabel">
+        <h2 id="adminCount">1</h2>
+        <p id="adminCountLabel">عدد المسؤولين</p>
+      </article>
+    </section>
+
+    <section aria-label="قائمة المستخدمين">
+      <h2 style="margin-bottom: 20px; color: #2c3e50;">قائمة المستخدمين (عمال وعملاء)</h2>
+      <table aria-describedby="userTableDesc" role="table">
+        <caption id="userTableDesc" style="text-align: left; padding-bottom: 10px; font-weight: bold;">
+          قائمة تفصيلية للمستخدمين المسجلين في النظام
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">الاسم</th>
+            <th scope="col">البريد الإلكتروني</th>
+            <th scope="col">الدور</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <!-- بيانات المستخدمين ستظهر هنا -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    &copy; 2025 Wassal Khedma - جميع الحقوق محفوظة
+  </footer>
+
+  <script>
+    // بيانات تجريبية في حال عدم وجود بيانات في localStorage
+    if (!localStorage.getItem("wassal_users")) {
+      const demoUsers = [
+        {name: "محمد أحمد", email: "m.ahmed@example.com", role: "worker"},
+        {name: "سارة علي", email: "s.ali@example.com", role: "client"},
+        {name: "أحمد مصطفى", email: "a.mostafa@example.com", role: "worker"},
+        {name: "ليلى حسن", email: "l.hassan@example.com", role: "client"}
+      ];
+      localStorage.setItem("wassal_users", JSON.stringify(demoUsers));
+    }
+
+    if (!localStorage.getItem("wassal_requests")) {
+      const demoRequests = [
+        {id: 1, user: "سارة علي", service: "تصليح كهرباء", status: "مفتوحة"},
+        {id: 2, user: "محمد أحمد", service: "صيانة تكييف", status: "مغلقة"},
+        {id: 3, user: "ليلى حسن", service: "تنظيف منازل", status: "مفتوحة"}
+      ];
+      localStorage.setItem("wassal_requests", JSON.stringify(demoRequests));
+    }
+
+    if (!localStorage.getItem("wassal_payments")) {
+      const demoPayments = [
+        {id: 1, user: "سارة علي", amount: 500, status: "مدفوع"},
+        {id: 2, user: "محمد أحمد", amount: 1200, status: "مدفوع"},
+      ];
+      localStorage.setItem("wassal_payments", JSON.stringify(demoPayments));
+    }
+
+    // تحميل البيانات من localStorage
+    const users = JSON.parse(localStorage.getItem("wassal_users")) || [];
+    const requests = JSON.parse(localStorage.getItem("wassal_requests")) || [];
+    const payments = JSON.parse(localStorage.getItem("wassal_payments")) || [];
+
+    // تحديث أعداد البطاقات
+    document.getElementById("workerCount").innerText = users.filter(u => u.role === "worker").length;
+    document.getElementById("clientCount").innerText = users.filter(u => u.role === "client").length;
+    document.getElementById("requestCount").innerText = requests.length;
+    document.getElementById("paymentCount").innerText = payments.length;
+    document.getElementById("adminCount").innerText = 1; // عدد المسؤولين ثابت حالياً
+
+    // تعبئة جدول المستخدمين
+    const userTableBody = document.getElementById("userTableBody");
+    userTableBody.innerHTML = "";
+
+    users.forEach(user => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${user.name || "-"}</td>
+        <td>${user.email || "-"}</td>
+        <td>${user.role === "worker" ? "عامل" : user.role === "client" ? "عميل" : user.role}</td>
+      `;
+      userTableBody.appendChild(tr);
+    });
+
+    // زر تسجيل الخروج - يمسح البيانات ويوجه لصفحة تسجيل الدخول
+    document.getElementById("logoutLink").addEventListener("click", e => {
+      e.preventDefault();
+      localStorage.clear();
+      alert("✅ تم تسجيل الخروج بنجاح");
+      window.location.href = "login.html";
+    });
+  </script>
+
+</body>
+</html>

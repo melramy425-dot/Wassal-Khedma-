@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مراسلة العامل - Wassal Khedma</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #e8f0f8;
+    }
+
+    nav {
+      background-color: #2c3e50;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .message img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .message-text {
+      background-color: #d0e6ff;
+      padding: 10px 15px;
+      border-radius: 10px;
+      max-width: 75%;
+      word-wrap: break-word;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    select, input, button {
+      font-size: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    select {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    input {
+      flex: 1;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط التنقل -->
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="workers.html">العمال</a>
+    <a href="request.html">طلب خدمة</a>
+    <a href="rate.html">تقييم</a>
+    <a href="login.html">تسجيل الدخول</a>
+  </nav>
+
+  <div class="container">
+    <h2>مراسلة العامل</h2>
+
+    <label for="workerSelect">اختر اسم العامل:</label>
+    <select id="workerSelect">
+      <option value="">-- اختر --</option>
+      <option value="أحمد">أحمد</option>
+      <option value="محمود">محمود</option>
+      <option value="محمد">محمد</option>
+      <option value="إبراهيم">إبراهيم</option>
+    </select>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-group">
+      <input type="text" id="messageInput" placeholder="اكتب رسالتك..." />
+      <button onclick="sendMessage()">إرسال</button>
+    </div>
+  </div>
+
+  <script>
+    let currentWorker = "";
+
+    document.getElementById("workerSelect").addEventListener("change", function () {
+      currentWorker = this.value;
+      loadMessages();
+    });
+
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const msg = input.value.trim();
+      if (!msg || !currentWorker) return;
+
+      const message = {
+        text: msg,
+        worker: currentWorker,
+        time: new Date().toLocaleString()
+      };
+
+      let messages = JSON.parse(localStorage.getItem("wassal_chat_" + currentWorker)) || [];
+      messages.push(message);
+      localStorage.setItem("wassal_chat_" + currentWorker, JSON.stringify(messages));
+
+      input.value = "";
+      loadMessages();
+    }
+
+    function loadMessages() {
+      const box = document.getElementById("chatBox");
+      box.innerHTML = "";
+
+      if (!currentWorker) return;
+
+      const messages = JSON.parse(localStorage.getItem("wassal_chat_" + currentWorker)) || [];
+
+      messages.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "message";
+        div.innerHTML = `
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="user" />
+          <div class="message-text">${m.text}<br><small>${m.time}</small></div>
+        `;
+        box.appendChild(div);
+      });
+
+      box.scrollTop = box.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>

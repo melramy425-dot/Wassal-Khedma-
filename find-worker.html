@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ابحث عن عامل - HandyConnect</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: #2c3e50;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 30px 0;
+      justify-content: center;
+    }
+
+    .filters select {
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      min-width: 160px;
+    }
+
+    .workers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .worker-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f9f9f9;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+
+    .worker-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .worker-card img {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .worker-info {
+      margin-top: 10px;
+    }
+
+    .worker-info h3 {
+      margin: 0;
+      color: #2980b9;
+    }
+
+    .worker-info p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .rating {
+      color: goldenrod;
+    }
+
+    .not-found {
+      text-align: center;
+      margin-top: 30px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="register.html">تسجيل كعامل</a>
+    <a href="workers.html">العمال</a>
+    <a href="request.html">طلب خدمة</a>
+    <a href="login.html">تسجيل الدخول</a>
+  </nav>
+
+  <div class="container">
+    <h2>🔍 ابحث عن العامل المناسب</h2>
+
+    <div class="filters">
+      <select id="filterService">
+        <option value="">نوع الخدمة</option>
+        <option value="كهربائي">كهربائي</option>
+        <option value="سباك">سباك</option>
+        <option value="نجار">نجار</option>
+        <option value="تبريد وتكييف">تبريد وتكييف</option>
+        <option value="دهان">دهان</option>
+        <option value="محارة">محارة</option>
+        <option value="نظافة وتعقيم">نظافة وتعقيم</option>
+        <option value="ألمنيوم">ألمنيوم</option>
+        <option value="زجاج">زجاج</option>
+        <option value="أنظمة أمن ومراقبة">أنظمة أمن ومراقبة</option>
+      </select>
+
+      <select id="filterCity">
+        <option value="">المدينة</option>
+        <option value="القاهرة">القاهرة</option>
+        <option value="الإسكندرية">الإسكندرية</option>
+        <option value="طنطا">طنطا</option>
+        <option value="المنصورة">المنصورة</option>
+        <option value="الجيزة">الجيزة</option>
+      </select>
+
+      <select id="filterArea">
+        <option value="">المنطقة</option>
+        <!-- مناطق القاهرة -->
+        <option value="الحسين">الحسين</option>
+        <option value="المعادي">المعادي</option>
+        <option value="الزمالك">الزمالك</option>
+        <!-- مناطق الإسكندرية -->
+        <option value="جليم">جليم</option>
+        <option value="ستانلي">ستانلي</option>
+        <option value="سيدى جابر">سيدى جابر</option>
+        <!-- مناطق الجيزة -->
+        <option value="الوراق">الوراق</option>
+        <option value="الدقي">الدقي</option>
+        <option value="المهندسين">المهندسين</option>
+      </select>
+
+      <select id="filterStatus">
+        <option value="">الحالة</option>
+        <option value="متاح">متاح</option>
+        <option value="مشغول">مشغول</option>
+      </select>
+    </div>
+
+    <div class="workers" id="workerList"></div>
+    <div class="not-found" id="noResults" style="display: none;">🙁 لا يوجد عمال يطابقون الفلترة الحالية.</div>
+  </div>
+
+  <script>
+    const workersContainer = document.getElementById('workerList');
+    const noResults = document.getElementById('noResults');
+
+    function displayWorkers(filtered = []) {
+      workersContainer.innerHTML = '';
+
+      if (filtered.length === 0) {
+        noResults.style.display = 'block';
+        return;
+      }
+
+      noResults.style.display = 'none';
+
+      filtered.forEach(worker => {
+        const card = document.createElement('div');
+        card.className = 'worker-card';
+
+        card.innerHTML = `
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="worker">
+          <div class="worker-info">
+            <h3>${worker.name}</h3>
+            <p>📞 ${worker.phone}</p>
+            <p>📍 ${worker.location}</p>
+            <p>📌 ${worker.area || 'غير محددة'}</p>
+            <p>🛠️ ${worker.service}</p>
+            <p>⏳ الحالة: ${worker.availability}</p>
+            <p>⭐ تقييم: <span class="rating">${worker.rating || '4.0'}</span></p>
+          </div>
+        `;
+        workersContainer.appendChild(card);
+      });
+    }
+
+    function filterWorkers() {
+      const allWorkers = JSON.parse(localStorage.getItem('handy_workers')) || [];
+      const service = document.getElementById('filterService').value;
+      const city = document.getElementById('filterCity').value;
+      const area = document.getElementById('filterArea').value;
+      const status = document.getElementById('filterStatus').value;
+
+      const result = allWorkers.filter(worker =>
+        (!service || worker.service === service) &&
+        (!city || worker.location === city) &&
+        (!area || worker.area === area) &&
+        (!status || worker.availability === status)
+      );
+
+      displayWorkers(result);
+    }
+
+    document.querySelectorAll('select').forEach(select => {
+      select.addEventListener('change', filterWorkers);
+    });
+
+    // عرض الكل أول مرة
+    window.onload = () => {
+      const workers = JSON.parse(localStorage.getItem('handy_workers')) || [];
+      displayWorkers(workers);
+    };
+  </script>
+
+</body>
+</html>

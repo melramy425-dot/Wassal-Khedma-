@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تقييم العامل - Wassal Khedma</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 450px;
+      width: 90%;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: 600;
+      color: #333;
+      text-align: right;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #27ae60;
+      outline: none;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      resize: vertical;
+      min-height: 80px;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    textarea:focus {
+      border-color: #27ae60;
+      outline: none;
+    }
+
+    /* النجوم */
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .stars input[type="radio"] {
+      display: none;
+    }
+
+    .stars label {
+      font-size: 2.5rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s;
+      user-select: none;
+    }
+
+    .stars input[type="radio"]:checked ~ label,
+    .stars label:hover,
+    .stars label:hover ~ label {
+      color: #f1c40f;
+    }
+
+    button {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #219150;
+    }
+
+    .success-msg {
+      margin-top: 20px;
+      color: #27ae60;
+      font-weight: 700;
+      display: none;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>تقييم العامل</h2>
+    <form id="rateForm">
+      <label for="workerName">اسم العامل:</label>
+      <input type="text" id="workerName" name="workerName" placeholder="ادخل اسم العامل" required />
+
+      <label for="username">اسم المستخدم (User Name):</label>
+      <input type="text" id="username" name="username" placeholder="ادخل اسم المستخدم" required />
+
+      <label>التقييم بالنجوم:</label>
+      <div class="stars">
+        <input type="radio" id="star5" name="rating" value="5" />
+        <label for="star5" title="5 نجوم">&#9733;</label>
+
+        <input type="radio" id="star4" name="rating" value="4" />
+        <label for="star4" title="4 نجوم">&#9733;</label>
+
+        <input type="radio" id="star3" name="rating" value="3" />
+        <label for="star3" title="3 نجوم">&#9733;</label>
+
+        <input type="radio" id="star2" name="rating" value="2" />
+        <label for="star2" title="2 نجوم">&#9733;</label>
+
+        <input type="radio" id="star1" name="rating" value="1" />
+        <label for="star1" title="1 نجمة">&#9733;</label>
+      </div>
+
+      <label for="review">ملاحظات / تقييم كتابي (اختياري):</label>
+      <textarea id="review" name="review" placeholder="اكتب تقييمك هنا..."></textarea>
+
+      <button type="submit">إرسال التقييم</button>
+
+      <div class="success-msg" id="successMsg">✅ شكراً لتقييمك!</div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('rateForm');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // اجلب القيم
+      const workerName = form.workerName.value.trim();
+      const username = form.username.value.trim();
+      const rating = form.rating.value;
+      const review = form.review.value.trim();
+
+      if (!workerName || !username || !rating) {
+        alert('يرجى تعبئة الحقول المطلوبة والتأكد من اختيار التقييم.');
+        return;
+      }
+
+      // هنا ممكن تخزن البيانات أو ترسلها للسيرفر (مثلاً باستخدام fetch)
+
+      // عرض رسالة النجاح
+      successMsg.style.display = 'block';
+
+      // إعادة تعيين النموذج بعد فترة
+      setTimeout(() => {
+        successMsg.style.display = 'none';
+        form.reset();
+      }, 2500);
+    });
+  </script>
+</body>
+</html>

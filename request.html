@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>طلب خدمة - Wassal Khedma</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef3f8;
+      color: #333;
+    }
+
+    /* شريط التنقل */
+    nav {
+      background-color: #2c3e50;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 45px;
+    }
+
+    nav .links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    nav .links a:hover {
+      color: #1abc9c;
+    }
+
+    /* الحاوية */
+    .container {
+      max-width: 750px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #16a085;
+    }
+
+    .success {
+      text-align: center;
+      color: green;
+      margin-top: 15px;
+      font-weight: bold;
+      display: none;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- حماية الصفحة -->
+  <script>
+    const role = localStorage.getItem("role");
+    if (role !== "client") {
+      alert("❌ يجب تسجيل الدخول كعميل لطلب خدمة.");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- شريط التنقل -->
+  <nav>
+    <img src="images/wassal.jfif" alt="Wassal Khedma Logo">
+    <div class="links">
+      <a href="index.html">الرئيسية</a>
+      <a href="workers.html">العمال</a>
+      <a href="request.html">طلب خدمة</a>
+      <a href="about.html">عن الموقع</a>
+      <a href="contact.html">تواصل معنا</a>
+      <a href="logout.html">تسجيل الخروج</a>
+    </div>
+  </nav>
+
+  <!-- المحتوى -->
+  <div class="container">
+    <h2>📋 اطلب خدمة الآن</h2>
+    <form id="requestForm">
+      <label for="clientName">اسمك بالكامل:</label>
+      <input type="text" id="clientName" required>
+
+      <label for="clientPhone">رقم الهاتف:</label>
+      <input type="tel" id="clientPhone" value="+20" required>
+
+      <label for="neededService">نوع الخدمة المطلوبة:</label>
+      <select id="neededService" required>
+        <option value="">اختر الخدمة</option>
+        <option>كهرباء</option>
+        <option>سباكة</option>
+        <option>نجارة</option>
+        <option>محارة ودهان</option>
+        <option>تبريد وتكييف</option>
+        <option>أنظمة الأمن والمراقبة</option>
+        <option>الزجاج والألمنيوم</option>
+        <option>الحدادة والألوميتال</option>
+        <option>النظافة والتعقيم</option>
+        <option>أعمال البناء</option>
+        <option>صيانة أجهزة كهربائية</option>
+        <option>تركيب بلاط وسيراميك</option>
+        <option>مكافحة الحشرات</option>
+      </select>
+
+      <label for="area">المنطقة / العنوان:</label>
+      <input type="text" id="area" required>
+
+      <label for="notes">ملاحظات إضافية (اختياري):</label>
+      <textarea id="notes" rows="3"></textarea>
+
+      <button type="submit">إرسال الطلب</button>
+    </form>
+
+    <div class="success" id="successMessage">
+      ✅ تم إرسال الطلب بنجاح! سيتم التواصل معك قريبًا.
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Wassal Khedma - نساعدك توصل للي يساعدك.</p>
+  </footer>
+
+  <script>
+    document.getElementById("requestForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          saveRequest(position.coords.latitude, position.coords.longitude);
+        }, function() {
+          saveRequest(null, null);
+        });
+      } else {
+        saveRequest(null, null);
+      }
+    });
+
+    function saveRequest(lat, lng) {
+      const request = {
+        clientName: document.getElementById("clientName").value,
+        clientPhone: document.getElementById("clientPhone").value,
+        service: document.getElementById("neededService").value,
+        area: document.getElementById("area").value,
+        notes: document.getElementById("notes").value,
+        lat: lat,
+        lng: lng,
+        date: new Date().toLocaleString(),
+        status: "new"
+      };
+
+      let requests = JSON.parse(localStorage.getItem("new_requests")) || [];
+      requests.push(request);
+      localStorage.setItem("new_requests", JSON.stringify(requests));
+
+      document.getElementById("requestForm").reset();
+      document.getElementById("successMessage").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تسجيل كعامل - Wassal Khedma</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: #2c3e50;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav img {
+      height: 45px;
+    }
+
+    nav .links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav .links a:hover {
+      color: #f1c40f;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="file"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .terms {
+      background: #f9f9f9;
+      padding: 15px;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      max-height: 160px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+
+    .agree {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .agree input {
+      margin-left: 10px;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    button:hover:enabled {
+      background-color: #219150;
+    }
+
+    .success-msg {
+      margin-top: 15px;
+      color: green;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ شريط التنقل مع اللوجو من فولدر images -->
+  <nav>
+    <img src="images/wassal.jfif" alt="Wassal Khedma Logo">
+    <div class="links">
+      <a href="index.html">الرئيسية</a>
+      <a href="about.html">عن Wassal Khedma</a>
+      <a href="workers.html">العمال</a>
+      <a href="request.html">طلب خدمة</a>
+      <a href="contact.html">تواصل معنا</a>
+      <a href="login.html">تسجيل الدخول</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>تسجيل كعامل في Wassal Khedma</h2>
+    <form id="registerForm" enctype="multipart/form-data">
+      <label>الاسم الكامل:</label>
+      <input type="text" id="fullName" required>
+
+      <label>رقم الهاتف:</label>
+      <input type="tel" id="phone" value="+20" required>
+
+      <label>البريد الإلكتروني:</label>
+      <input type="email" id="email" required>
+
+      <label>كلمة المرور:</label>
+      <input type="password" id="password" required>
+
+      <label>نوع الخدمة:</label>
+      <select id="service" required>
+        <option value="">اختر نوع الخدمة</option>
+        <option>سباكة</option>
+        <option>كهرباء</option>
+        <option>نجارة</option>
+        <option>محارة ودهان</option>
+        <option>أعمال التكييف والتبريد</option>
+        <option>أنظمة الأمن والمراقبة</option>
+        <option>الزجاج والألمنيوم</option>
+        <option>الحدادة والألوميتال</option>
+        <option>النظافة والتعقيم</option>
+      </select>
+
+      <label>المدينة / المنطقة:</label>
+      <select id="location" required>
+        <option value="">اختر منطقتك</option>
+        <option>الإسكندرية</option>
+        <option>القاهرة</option>
+        <option>الجيزة</option>
+        <option>الدقهلية</option>
+        <option>المنصورة</option>
+        <option>أسيوط</option>
+        <option>المنيا</option>
+      </select>
+
+      <label>عدد سنوات الخبرة:</label>
+      <input type="text" id="experience" placeholder="مثلاً: 5 سنوات" required>
+
+      <label>الحالة الحالية:</label>
+      <select id="availability" required>
+        <option value="">هل أنت متاح الآن؟</option>
+        <option value="متاح">متاح</option>
+        <option value="مشغول">مشغول</option>
+      </select>
+
+      <label>صورة البطاقة الشخصية:</label>
+      <input type="file" id="idCard" accept="image/*" required>
+
+      <!-- إضافة حقل رفع صورة الفيش والتشبيه -->
+      <label>صورة الفيش والتشبيه:</label>
+      <input type="file" id="securityClearance" accept="image/*" required>
+
+      <div class="terms">
+        <p>بالتسجيل كعامل في Wassal Khedma فإنك توافق على التالي:</p>
+        <ul>
+          <li>🛠️ تقديم العمل بأمانة وإتقان.</li>
+          <li>🤝 الالتزام بحسن التعامل مع العملاء.</li>
+          <li>📸 رفع صورة البطاقة للتحقق من الهوية.</li>
+          <li>🛡️ رفع صورة الفيش والتشبيه كشرط أساسي للقبول.</li>
+          <li>📍 تحمل المسؤولية عن جودة الخدمة.</li>
+          <li>✅ تقديم بيانات صحيحة ودقيقة.</li>
+        </ul>
+      </div>
+
+      <div class="agree">
+        <input type="checkbox" id="agreeCheckbox">
+        <label for="agreeCheckbox">أوافق على جميع الشروط</label>
+      </div>
+
+      <button type="submit" id="submitBtn" disabled>تسجيل كعامل</button>
+
+      <div class="success-msg" id="successMsg">✅ تم التسجيل بنجاح! سيتم مراجعة بياناتك.</div>
+    </form>
+  </div>
+
+  <script>
+    const agree = document.getElementById('agreeCheckbox');
+    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('registerForm');
+    const msg = document.getElementById('successMsg');
+
+    // تفعيل زر التسجيل عند الموافقة
+    agree.addEventListener('change', () => {
+      submitBtn.disabled = !agree.checked;
+    });
+
+    // حفظ بيانات العامل وتسجيل الدخول التلقائي
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // هنا لا يمكن حفظ ملفات الصور في localStorage لذلك فقط نحدد أن الصور تم رفعها (true)
+      const workerData = {
+        name: document.getElementById('fullName').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        service: document.getElementById('service').value,
+        location: document.getElementById('location').value,
+        experience: document.getElementById('experience').value,
+        availability: document.getElementById('availability').value,
+        cardUploaded: !!document.getElementById('idCard').files.length,
+        securityClearanceUploaded: !!document.getElementById('securityClearance').files.length
+      };
+
+      localStorage.setItem("loggedInWorker", JSON.stringify(workerData));
+
+      form.reset();
+      msg.style.display = "block";
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        window.location.href = "worker_dashboard.html"; // تحويل لصفحة العامل
+      }, 1500);
+    });
+
+    // تسجيل دخول تلقائي إذا كان مسجل بالفعل
+    window.onload = function() {
+      const loggedIn = localStorage.getItem("loggedInWorker");
+      if (loggedIn) {
+        window.location.href = "worker_dashboard.html";
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>دفع طلب الخدمة رقم #123 - Wassal Khedma</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f2f1, #80cbc4);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      max-width: 520px;
+      width: 100%;
+      padding: 35px 40px;
+      box-sizing: border-box;
+    }
+    h1 {
+      color: #00796b;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .request-info {
+      background: #e0f2f1;
+      padding: 20px 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      color: #004d40;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .request-info p {
+      margin: 8px 0;
+    }
+    label {
+      display: block;
+      margin-top: 18px;
+      color: #00695c;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 13px 15px;
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 2px solid #80cbc4;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      border-color: #00796b;
+      outline: none;
+    }
+    button {
+      margin-top: 32px;
+      width: 100%;
+      background-color: #00796b;
+      border: none;
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      letter-spacing: 0.05em;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    .error-msg, .success-msg {
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+    .error-msg {
+      background-color: #ef5350;
+      color: #b71c1c;
+    }
+    .success-msg {
+      background-color: #66bb6a;
+      color: #1b5e20;
+    }
+    .cards-logos {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .cards-logos img {
+      width: 60px;
+      height: auto;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #00796b;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    .back-link:hover {
+      color: #004d40;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" role="main" aria-label="نموذج دفع طلب الخدمة رقم 123">
+  <a href="dashboard.html" class="back-link" aria-label="العودة إلى لوحة التحكم">&larr; العودة إلى لوحة التحكم</a>
+  <h1>دفع طلب الخدمة رقم #123</h1>
+
+  <section class="request-info" aria-live="polite">
+    <p><strong>اسم العميل:</strong> محمد أحمد</p>
+    <p><strong>اسم العامل:</strong> علي حسين</p>
+    <p><strong>نوع الخدمة:</strong> كهرباء</p>
+    <p><strong>تاريخ الخدمة:</strong> 2025-08-10 14:30</p>
+    <p><strong>الحالة الحالية:</strong> قيد الانتظار</p>
+    <p><strong>المبلغ المطلوب:</strong> 100 جنيه (تجريبي)</p>
+  </section>
+
+  <!-- مثال رسالة خطأ -->
+  <!-- <div class="error-msg" role="alert">يرجى ملء جميع بيانات البطاقة.</div> -->
+
+  <!-- مثال رسالة نجاح -->
+  <!-- <div class="success-msg" role="alert">تمت عملية الدفع بنجاح. شكراً لاستخدامك خدمتنا.</div> -->
+
+  <form method="POST" action="#" novalidate aria-label="نموذج إدخال بيانات الدفع">
+    <label for="card_name">اسم حامل البطاقة <span style="color:#e53935;">*</span></label>
+    <input type="text" id="card_name" name="card_name" placeholder="مثلاً: Ahmed Mohamed" required autocomplete="cc-name" value="" />
+
+    <label for="card_number">رقم البطاقة <span style="color:#e53935;">*</span></label>
+    <input type="text" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19" required autocomplete="cc-number"
+           oninput="this.value=this.value.replace(/[^\d ]/g,'').replace(/(.{4})/g,'$1 ').trim()" value="" />
+
+    <label for="expiry_month">شهر انتهاء الصلاحية <span style="color:#e53935;">*</span></label>
+    <select id="expiry_month" name="expiry_month" required autocomplete="cc-exp-month">
+      <option value="" disabled selected>اختر الشهر</option>
+      <option value="01">01</option>
+      <option value="02">02</option>
+      <option value="03">03</option>
+      <option value="04">04</option>
+      <option value="05">05</option>
+      <option value="06">06</option>
+      <option value="07">07</option>
+      <option value="08">08</option>
+      <option value="09">09</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
+
+    <label for="expiry_year">سنة انتهاء الصلاحية <span style="color:#e53935;">*</span></label>
+    <select id="expiry_year" name="expiry_year" required autocomplete="cc-exp-year">
+      <option value="" disabled selected>اختر السنة</option>
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+      <option value="2027">2027</option>
+      <option value="2028">2028</option>
+      <option value="2029">2029</option>
+      <option value="2030">2030</option>
+      <option value="2031">2031</option>
+      <option value="2032">2032</option>
+      <option value="2033">2033</option>
+      <option value="2034">2034</option>
+      <option value="2035">2035</option>
+    </select>
+
+    <label for="cvv">رمز التحقق CVV <span style="color:#e53935;">*</span></label>
+    <input type="password" id="cvv" name="cvv" placeholder="123" maxlength="4" required autocomplete="cc-csc" />
+
+    <button type="submit" aria-label="دفع الآن">دفع الآن</button>
+  </form>
+
+  <div class="cards-logos" aria-label="شعارات بطاقات الدفع">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDT6ma3FbEe4hyuodqU10gidPjcQ1yD2pwSg&s" alt="MasterCard Logo" />
+    <img src="https://sa.visamiddleeast.com/dam/VCOM/regional/ve/romania/blogs/hero-image/visa-logo-800x450.jpg" alt="Visa Logo" />
+  </div>
+
+</div>
+
+</body>
+</html>

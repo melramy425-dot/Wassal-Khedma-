@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تواصل معنا - wassal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #34495e;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #1abc9c;
+    }
+
+    .contact-section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input, textarea, button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #16a085;
+    }
+
+    .info-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-top: 30px;
+    }
+
+    .info-box {
+      background: #ecf0f1;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      width: 200px;
+    }
+
+    .info-box img {
+      max-width: 50px;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1> wassal Khedma </h1>
+    <p>تواصل معنا لو عندك استفسار أو مشكلة</p>
+  </header>
+
+  <nav>
+  <a href="index.html">الرئيسية</a>
+  <a href="about.html">عن wassal khedma </a>
+  <a href="workers.html">العمال</a>
+  <a href="request.html">طلب خدمة</a>
+  <a href="login.html">تسجيل الدخول</a>
+</nav>
+
+
+  <section class="contact-section">
+    <h2>نموذج التواصل</h2>
+    <form>
+      <label for="name">الاسم:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">البريد الإلكتروني:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="message">الرسالة:</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">إرسال</button>
+    </form>
+
+    <div class="info-boxes">
+      <div class="info-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="location">
+        <p>مصر - الإسكندرية</p>
+      </div>
+      <div class="info-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" alt="email">
+        <p> wassal khedma @example.com</p>
+      </div>
+      <div class="info-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" alt="phone">
+        <p>0100 000 0000</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 wassal - نحن هنا لدعمك دائمًا.</p>
+  </footer>
+</body>
+</html>

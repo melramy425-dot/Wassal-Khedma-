@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>طلباتي - Wassal Khedma</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+    }
+    header {
+        background: #1a73e8;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    header img {
+        height: 40px;
+        margin-left: 10px;
+    }
+    header h1 {
+        font-size: 20px;
+        margin: 0;
+    }
+    nav {
+        background: #0d47a1;
+        padding: 10px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    nav a {
+        color: white;
+        text-decoration: none;
+        background: #1976d2;
+        padding: 8px 15px;
+        border-radius: 6px;
+        transition: background 0.3s;
+    }
+    nav a:hover {
+        background: #1565c0;
+    }
+    .container {
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+    }
+    .wallet {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .wallet button {
+        background: #43a047;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .wallet button:hover {
+        background: #2e7d32;
+    }
+    .form-section {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    select, input, button {
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    button.add-request {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button.add-request:hover {
+        background: #0d47a1;
+    }
+    .request-card {
+        background: white;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .status {
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+    .pending { background: orange; color: white; }
+    .completed { background: green; color: white; }
+    .canceled { background: red; color: white; }
+</style>
+</head>
+<body>
+
+<header>
+    <div style="display: flex; align-items: center;">
+        <img src="images/wassal.jfif" alt="Logo">
+        <h1>Wassal Khedma</h1>
+    </div>
+    <div>🔔 <span id="notif-count">0</span></div>
+</header>
+
+<nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="worker_dashboard.html">لوحة العامل</a>
+    <a href="chat.html">الشات</a>
+    <a href="my_requests.html">طلباتي</a>
+    <a href="request.html">طلب خدمة</a>
+    <a href="login.html">تسجيل الدخول</a>
+    <a href="logout.html">تسجيل الخروج</a>
+</nav>
+
+<div class="container">
+    <div class="wallet">
+        <span>💰 الرصيد: <strong id="wallet-balance">0</strong> جنيه</span>
+        <button onclick="addBalance()">إضافة رصيد</button>
+    </div>
+
+    <div class="form-section">
+        <h3>إضافة طلب جديد</h3>
+        <select id="city" onchange="updateAreas()">
+            <option value="">اختر المحافظة</option>
+            <option value="اسكندرية">الإسكندرية</option>
+            <option value="القاهرة">القاهرة</option>
+            <option value="الجيزة">الجيزة</option>
+        </select>
+        <select id="area">
+            <option value="">اختر المنطقة</option>
+        </select>
+        <input type="text" id="details" placeholder="تفاصيل الطلب">
+        <button class="add-request" onclick="addRequest()">إضافة الطلب</button>
+    </div>
+
+    <div id="requests-list"></div>
+</div>
+
+<script>
+    const cityAreas = {
+        "اسكندرية": ["جليم","كامب شيزار","بحري","سيدي جابر","ميامي","جناكليز","سان ستيفانو","باكوس","العطارين","الشاطبي","كليوباترا","المنتزه","المعمورة","محرم بك"],
+        "القاهرة": ["السبتية","شبرا","التوفيقية","الضرب الأحمر","التجمع","مدينة نصر","التحرير","الحسين","السيدة زينب","المعادي"],
+        "الجيزة": ["الدقي","إمبابة","أكتوبر","الشيخ زايد","الوراق","الهرم","حدائق الأهرام"]
+    };
+
+    let requests = [];
+    let balance = 0;
+    let notifCount = 0;
+
+    function updateAreas() {
+        const city = document.getElementById("city").value;
+        const areaSelect = document.getElementById("area");
+        areaSelect.innerHTML = "<option value=''>اختر المنطقة</option>";
+        if (cityAreas[city]) {
+            cityAreas[city].forEach(area => {
+                areaSelect.innerHTML += `<option value="${area}">${area}</option>`;
+            });
+        }
+    }
+
+    function addRequest() {
+        const city = document.getElementById("city").value;
+        const area = document.getElementById("area").value;
+        const details = document.getElementById("details").value;
+        if (!city || !area || !details) {
+            alert("من فضلك أكمل كل البيانات");
+            return;
+        }
+        const newRequest = { city, area, details, status: "pending" };
+        requests.push(newRequest);
+        notifCount++;
+        document.getElementById("notif-count").textContent = notifCount;
+        renderRequests();
+    }
+
+    function renderRequests() {
+        const container = document.getElementById("requests-list");
+        container.innerHTML = "";
+        requests.forEach((req, index) => {
+            container.innerHTML += `
+                <div class="request-card">
+                    <h4>📍 ${req.city} - ${req.area}</h4>
+                    <p>${req.details}</p>
+                    <span class="status ${req.status}">${getStatusText(req.status)}</span>
+                    <br><br>
+                    <button onclick="updateStatus(${index}, 'completed')">✅ مكتمل</button>
+                    <button onclick="updateStatus(${index}, 'canceled')">❌ إلغاء</button>
+                </div>
+            `;
+        });
+    }
+
+    function getStatusText(status) {
+        switch(status) {
+            case "pending": return "جاري التنفيذ";
+            case "completed": return "مكتمل";
+            case "canceled": return "ملغي";
+        }
+    }
+
+    function updateStatus(index, newStatus) {
+        requests[index].status = newStatus;
+        renderRequests();
+    }
+
+    function addBalance() {
+        let amount = prompt("أدخل المبلغ الذي تريد إضافته:");
+        if (amount && !isNaN(amount)) {
+            balance += parseFloat(amount);
+            document.getElementById("wallet-balance").textContent = balance;
+        }
+    }
+</script>
+
+</body>
+</html>

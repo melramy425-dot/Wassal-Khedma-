@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>العمال - Wassal Khedma</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #E0EAFC, #CFDEF3);
+      margin: 0;
+      padding: 0;
+    }
+    /* Navbar */
+    nav {
+      background-color: #2c3e50;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    nav img {
+      height: 40px;
+      border-radius: 50%;
+      user-select: none;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: #1abc9c;
+    }
+    h2 {
+      text-align: center;
+      margin: 30px 0 10px;
+      color: #2c3e50;
+    }
+    .filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filters select {
+      padding: 10px;
+      margin: 0 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    .worker-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .worker-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+    .worker-card:hover {
+      transform: scale(1.03);
+    }
+    .worker-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .worker-card h3 {
+      margin: 10px 0 5px;
+      color: #2980b9;
+    }
+    .worker-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #555;
+    }
+    .no-data {
+      text-align: center;
+      font-size: 16px;
+      color: gray;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <img src="images/wassal.jfif" alt="Wassal Khedma Logo" />
+    <div class="nav-links" id="navLinks">
+      <!-- الروابط ديناميكية حسب حالة تسجيل الدخول -->
+    </div>
+  </nav>
+
+  <h2>العمال المتاحين حاليًا</h2>
+
+  <!-- فلاتر البحث -->
+  <div class="filters">
+    <select id="filterService" aria-label="اختيار نوع الخدمة">
+      <option value="">نوع الخدمة</option>
+      <option>سباكة</option>
+      <option>كهرباء</option>
+      <option>نجارة</option>
+      <option>محارة ودهان</option>
+      <option>أعمال التكييف والتبريد</option>
+      <option>أنظمة الأمن والمراقبة</option>
+      <option>الزجاج والألمنيوم</option>
+      <option>الحدادة والألوميتال</option>
+      <option>النظافة والتعقيم</option>
+    </select>
+
+    <select id="filterStatus" aria-label="اختيار حالة العامل">
+      <option value="">الحالة</option>
+      <option value="متاح">متاح</option>
+      <option value="مشغول">مشغول</option>
+    </select>
+  </div>
+
+  <!-- قائمة العمال -->
+  <div class="worker-list" id="workerList"></div>
+  <p class="no-data" id="noData" style="display: none;">لا يوجد عمال بهذه المواصفات حاليًا.</p>
+
+  <script>
+    // التحقق من تسجيل الدخول
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    const navLinks = document.getElementById("navLinks");
+
+    function buildNavLinks() {
+      navLinks.innerHTML = "";
+
+      navLinks.insertAdjacentHTML("beforeend", `<a href="index.html">الرئيسية</a>`);
+      navLinks.insertAdjacentHTML("beforeend", `<a href="about.html">عن Wassal Khedma</a>`);
+      navLinks.insertAdjacentHTML("beforeend", `<a href="workers.html">العمال</a>`);
+      navLinks.insertAdjacentHTML("beforeend", `<a href="request.html">طلب خدمة</a>`);
+      navLinks.insertAdjacentHTML("beforeend", `<a href="contact.html">تواصل معنا</a>`);
+
+      if (loggedUser) {
+        // لو الادمن يفتح داشبورد الادمن
+        if (isAdmin) {
+          navLinks.insertAdjacentHTML("beforeend", `<a href="dashboard.html">لوحة التحكم</a>`);
+        }
+        navLinks.insertAdjacentHTML("beforeend", `<a href="#" id="logoutLink">تسجيل الخروج</a>`);
+      } else {
+        navLinks.insertAdjacentHTML("beforeend", `<a href="login.html">تسجيل الدخول</a>`);
+      }
+    }
+
+    buildNavLinks();
+
+    // تسجيل الخروج
+    document.addEventListener("click", (e) => {
+      if (e.target.id === "logoutLink") {
+        e.preventDefault();
+        localStorage.removeItem("loggedUser");
+        localStorage.removeItem("isAdmin");
+        alert("✅ تم تسجيل الخروج بنجاح");
+        window.location.href = "index.html";
+      }
+    });
+
+    // جلب كل المستخدمين من localStorage
+    const allUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const workers = allUsers.filter(u => u.role === "worker");
+
+    const workerList = document.getElementById("workerList");
+    const filterService = document.getElementById("filterService");
+    const filterStatus = document.getElementById("filterStatus");
+    const noData = document.getElementById("noData");
+
+    function displayWorkers(list) {
+      workerList.innerHTML = "";
+      if (list.length === 0) {
+        noData.style.display = "block";
+        return;
+      }
+      noData.style.display = "none";
+
+      list.forEach(worker => {
+        const phoneFormatted = worker.phone && !worker.phone.startsWith("+20") ? `+20 ${worker.phone}` : worker.phone || "";
+        const card = document.createElement("div");
+        card.className = "worker-card";
+        card.innerHTML = `
+          <img src="${worker.avatar || 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png'}" alt="صورة العامل">
+          <h3>${worker.name || "غير معروف"}</h3>
+          <p>📱 ${phoneFormatted}</p>
+          <p>✉️ ${worker.email || "غير متوفر"}</p>
+          <p>🔧 الخدمة: ${worker.service || "غير محدد"}</p>
+          <p>📍 المنطقة: ${worker.location || "غير محددة"}</p>
+          <p>📊 الخبرة: ${worker.experience || "غير محددة"}</p>
+          <p>⏱️ الحالة: <strong>${worker.availability || "متاح"}</strong></p>
+        `;
+        workerList.appendChild(card);
+      });
+    }
+
+    function applyFilters() {
+      const selectedService = filterService.value;
+      const selectedStatus = filterStatus.value;
+
+      const filtered = workers.filter(worker => {
+        const matchService = selectedService ? worker.service === selectedService : true;
+        const matchStatus = selectedStatus ? worker.availability === selectedStatus : true;
+        return matchService && matchStatus;
+      });
+
+      displayWorkers(filtered);
+    }
+
+    filterService.addEventListener("change", applyFilters);
+    filterStatus.addEventListener("change", applyFilters);
+
+    // عرض أولي
+    displayWorkers(workers);
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب جديد - Wassal Khedma</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .signup-container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+    }
+
+    .signup-container img {
+      width: 90px;
+      margin-bottom: 15px;
+      border-radius: 50%;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #2c3e50;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #16a085;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #2980b9;
+      text-decoration: none;
+    }
+
+    .success-message {
+      color: green;
+      display: none;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: red;
+      display: none;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <img src="images/wassal.jfif" alt="Wassal Khedma Logo">
+    <h2>إنشاء حساب جديد</h2>
+    <form id="signupForm">
+      <input type="text" id="fullName" placeholder="الاسم الكامل" required>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" id="password" placeholder="كلمة المرور" required>
+      <select id="role" required>
+        <option value="">اختر نوع الحساب</option>
+        <option value="client">عميل</option>
+        <option value="worker">عامل</option>
+        <option value="admin">أدمن</option>
+      </select>
+      <button type="submit">تسجيل</button>
+      <div class="success-message" id="successMsg">✅ تم التسجيل بنجاح! يمكنك الآن تسجيل الدخول.</div>
+      <div class="error-message" id="errorMsg">❌ البريد الإلكتروني مسجل بالفعل.</div>
+    </form>
+    <div class="login-link">
+      لديك حساب بالفعل؟ <a href="login.html">سجّل الدخول</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // التحقق إذا كان الإيميل موجود
+      if (users.some(user => user.email === email)) {
+        document.getElementById("errorMsg").style.display = "block";
+        document.getElementById("successMsg").style.display = "none";
+        return;
+      }
+
+      // إضافة المستخدم
+      const newUser = { name, email, password, role };
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      document.getElementById("signupForm").reset();
+      document.getElementById("successMsg").style.display = "block";
+      document.getElementById("errorMsg").style.display = "none";
+    });
+  </script>
+</body>
+</html>
